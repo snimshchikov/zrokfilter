@@ -21,12 +21,13 @@ func init() {
     caddy.RegisterHandlerDirective("zrokfilter", parseZrokFilterDirective)
 }
 
-func parseZrokFilterDirective(d *caddyfile.Dispenser) (caddyhttp.MiddlewareHandler, error) {
-    val, err := (ZrokFilter{}).UnmarshalCaddyfile(d)
+func parseZrokFilterDirective(h httpcaddyfile.Helper) (caddyhttp.MiddlewareHandler, error) {
+    handler := new(ZrokFilter)
+    err := handler.UnmarshalCaddyfile(h.Dispenser)
     if err != nil {
         return nil, err
     }
-    return val.(ZrokFilter), nil
+    return handler, nil
 }
 
 func (ZrokFilter) CaddyModule() caddy.ModuleInfo {
