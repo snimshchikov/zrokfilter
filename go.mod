@@ -1,4 +1,4 @@
-module github.com/abiosoft/caddy-hmac
+module github.com/snimshchikov/zrokfilter
 
 go 1.14
 
