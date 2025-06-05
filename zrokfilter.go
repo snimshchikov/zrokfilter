@@ -11,13 +11,22 @@ import (
     "github.com/caddyserver/caddy/v2/modules/caddyhttp"
 )
 
-func init() {
-    caddy.RegisterModule(ZrokFilter{})
-}
-
 type ZrokFilter struct {
     HTMLPath string `json:"html_path,omitempty"`
     body     []byte
+}
+
+func init() {
+    caddy.RegisterModule(ZrokFilter{})
+    caddy.RegisterHandlerDirective("zrokfilter", parseZrokFilterDirective)
+}
+
+func parseZrokFilterDirective(d *caddyfile.Dispenser) (caddyhttp.MiddlewareHandler, error) {
+    val, err := (ZrokFilter{}).UnmarshalCaddyfile(d)
+    if err != nil {
+        return nil, err
+    }
+    return val.(ZrokFilter), nil
 }
 
 func (ZrokFilter) CaddyModule() caddy.ModuleInfo {
